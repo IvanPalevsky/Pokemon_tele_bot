@@ -37,11 +37,24 @@ class Pokemon:
             return (data['forms'][0]['name'])
         else:
             return "Pikachu"
+
+    def get_hp(self):
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return (data['sprites']["stats"]["base_stat"])
+        else:
+            return "Pikachu"
     
     # Метод класса для получения информации
     def info(self):
         return f"Имя твоего покеомона: {self.name}"
 
+    # Метод класса для получения способности покемона
+    def info2(self):
+        return f"Здоровье твоего покеомона: {self.hp}"
+    
     # Метод класса для получения картинки покемона
     def show_img(self):
         return self.img
