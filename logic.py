@@ -1,5 +1,7 @@
 from random import randint
+from datetime import datetime, timedelta
 import requests
+import time
 
 class Pokemon:
     pokemons = {}
@@ -13,6 +15,7 @@ class Pokemon:
         self.name = self.get_name()
         self.hp = randint(10, 100)
         self.power = randint(10, 30)
+        self.last_feed_time = datetime.now
 
         Pokemon.pokemons[pokemon_trainer] = self
     
@@ -59,6 +62,16 @@ class Pokemon:
     # Метод класса для получения картинки покемона
     def show_img(self):
         return self.img
+    
+    def feed(self, feed_interval = 20, hp_increase = 10 ):
+        current_time = datetime.now()  
+        delta_time = timedelta(seconds=feed_interval)  
+        if (current_time - self.last_feed_time) > delta_time:
+            self.hp += hp_increase
+            self.last_feed_time = current_time
+            return f"Здоровье покемона увеличено. Текущее здоровье: {self.hp}"
+        else:
+            return f"Следующее время кормления покемона: {current_time+delta_time}"  
 
 class Fighter(Pokemon):
     def attack(self, enemy):
@@ -69,7 +82,13 @@ class Fighter(Pokemon):
         return result + f"\n Боец применил супер-атаку силой:{super_power} "
 
 class Wizard(Pokemon):
-    pass
+    def feed_self():
+        return super().feed(10)
+
+p = Pokemon('user1')
+time.sleep(21)
+print(p.feed())
+
 
 
 
